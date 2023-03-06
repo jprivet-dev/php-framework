@@ -82,6 +82,32 @@ $ vendor/bin/phpunit tests --color
 
 {back_to_top}
 
+== PHPStorm configuration
+
+IMPORTANT: The following configuration are provided for *PHPStorm 2022.3.2*
+
+=== Enable auto-import in file scope
+
+For importing the classes like:
+
+```php
+use Symfony\Component\HttpFoundation\Request;
+$request = Request::createFromGlobals();
+```
+
+Instead of:
+
+```php
+$request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+
+```
+
+Go on *Settings (Ctrl+Alt+S) > Editor > General > Auto Import > PHP* and
+check *Enable auto-import in file scope*.
+
+
+{back_to_top}
+
 == Resources
 
 * https://symfony.com/doc/current/create_framework/index.html
