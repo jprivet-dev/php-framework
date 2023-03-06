@@ -41,6 +41,12 @@ My own PHP framework, based on the https://symfony.com/doc/current/create_framew
 
 . https://www.php.net
 
+```
+sudo apt install php
+sudo apt install php-xml
+sudo apt install php-mbstring
+```
+
 === Composer
 
 . https://getcomposer.org/download/
