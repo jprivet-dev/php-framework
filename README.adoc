@@ -33,6 +33,8 @@ toc::[]
 
 My own PHP framework, based on the https://symfony.com/doc/current/create_framework/index.html[Create your own PHP Framework] tutorial of Symfony.
 
+TIP: Don't reinvent the wheel!
+
 {back_to_top}
 
 == Prerequisites
@@ -78,6 +80,60 @@ Now run `php bin/composer` in order to run *Composer*.
 
 ```
 $ vendor/bin/phpunit tests --color
+```
+
+{back_to_top}
+
+== Memos
+
+=== `Request` class
+
+NOTE: See https://symfony.com/doc/current/create_framework/http_foundation.html
+
+```php
+// the URI being requested (e.g. /about) minus any query parameters
+$request->getPathInfo();
+
+// retrieves GET and POST variables respectively
+$request->query->get('foo');
+$request->request->get('bar', 'default value if bar does not exist');
+
+// retrieves SERVER variables
+$request->server->get('HTTP_HOST');
+
+// retrieves an instance of UploadedFile identified by foo
+$request->files->get('foo');
+
+// retrieves a COOKIE value
+$request->cookies->get('PHPSESSID');
+
+// retrieves a HTTP request header, with normalized, lowercase keys
+$request->headers->get('host');
+$request->headers->get('content-type');
+
+$request->getMethod();    // GET, POST, PUT, DELETE, HEAD
+$request->getLanguages(); // an array of languages the client accepts
+
+// simulate a request
+$request = Request::create('/index.php?name=Fabien');
+$response->setMaxAge(10);
+
+if ($myIp === $request->getClientIp()) {
+    // the client is a known one, so give it some more privilege
+}
+```
+
+=== `Response` class
+
+```php
+$response = new Response();
+
+$response->setContent('Hello world!');
+$response->setStatusCode(200);
+$response->headers->set('Content-Type', 'text/html');
+
+// configure the HTTP cache headers
+$response->setMaxAge(10);
 ```
 
 {back_to_top}
