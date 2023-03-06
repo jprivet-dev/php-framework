@@ -1,15 +1,15 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class IndexTest extends TestCase
+class PagesTest extends TestCase
 {
     public function testHello()
     {
-        $_GET['name'] = 'Fabien';
 
         ob_start();
-        include 'index.php';
+        include __DIR__.'/../web/front.php';
         $content = ob_get_clean();
 
         $this->assertEquals('Hello Fabien', $content);
