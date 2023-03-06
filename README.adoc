@@ -74,6 +74,14 @@ Now run `php bin/composer` in order to run *Composer*.
 
 {back_to_top}
 
+== Tests
+
+```
+$ vendor/bin/phpunit tests --color
+```
+
+{back_to_top}
+
 == Resources
 
 * https://symfony.com/doc/current/create_framework/index.html
