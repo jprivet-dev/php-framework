@@ -71,7 +71,7 @@ Now run `php bin/composer` in order to run *Composer*.
 . `$ git clone {git_clone_ssh}`
 . `$ cd {git_project}`
 . `$ php bin/composer install`
-. `$ php -S localhost:3000`
+. `$ php -S localhost:3000 -t web web/front.php`
 . Open your browser on http://localhost:3000/
 
 {back_to_top}
