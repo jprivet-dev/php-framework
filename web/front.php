@@ -15,7 +15,9 @@ $map = [
 
 $path = $request->getPathInfo();
 if (isset($map[$path])) {
+    ob_start();
     require __DIR__.'/../src/pages/'.$map[$path];
+    $response->setContent(ob_get_clean());
 } else {
     $response->setStatusCode(404);
     $response->setContent('Not Found');
