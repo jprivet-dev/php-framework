@@ -1,0 +1,16 @@
+{
+    "name": "jprivet-dev/php-framework",
+    "description": "My own PHP framework, based on the Create your own PHP Framework tutorial of Symfony.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "App\\Tests\\": "tests/"
+        }
+    },
+    "require": {}
+}
