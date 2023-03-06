@@ -1,0 +1,185 @@
+:toc: macro
+:toc-title: Summary
+:toclevels: 3
+:numbered:
+
+ifndef::env-github[:icons: font]
+ifdef::env-github[]
+:status:
+:outfilesuffix: .adoc
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+:back_to_top_target: top-target
+:back_to_top_label: ⬆ Back to top
+:back_to_top: <<{back_to_top_target},{back_to_top_label}>>
+
+:main_title: PHP Framework
+:git_project: php-framework
+:git_username: jprivet-dev
+:git_url: https://github.com/{git_username}/{git_project}
+:git_clone_ssh: git@github.com:{git_username}/{git_project}.git
+
+[#{back_to_top_target}]
+= {main_title}
+
+toc::[]
+
+== Presentation
+
+My own PHP framework, based on the https://symfony.com/doc/current/create_framework/index.html[Create your own PHP Framework] tutorial of Symfony.
+
+TIP: Don't reinvent the wheel!
+
+{back_to_top}
+
+== Prerequisites
+
+=== PHP
+
+. https://www.php.net
+
+```
+sudo apt install php
+sudo apt install php-xml
+sudo apt install php-mbstring
+```
+
+=== Composer
+
+. https://getcomposer.org/download/
+. https://getcomposer.org/doc/00-intro.md#locally
+
+```
+$ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+$ php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+$ mkdir bin
+$ php composer-setup.php --install-dir=bin --filename=composer
+$ php -r "unlink('composer-setup.php');"
+```
+
+Now run `php bin/composer` in order to run *Composer*.
+
+{back_to_top}
+
+== Installation
+
+. `$ git clone {git_clone_ssh}`
+. `$ cd {git_project}`
+. `$ php bin/composer install`
+. `$ php -S localhost:3000 -t web web/front.php`
+. Open your browser on http://localhost:3000/
+
+{back_to_top}
+
+== Tests
+
+```
+$ vendor/bin/phpunit tests --color
+```
+
+{back_to_top}
+
+== Memos
+
+=== `Request` class
+
+NOTE: See https://symfony.com/doc/current/create_framework/http_foundation.html
+
+```php
+// the URI being requested (e.g. /about) minus any query parameters
+$request->getPathInfo();
+
+// retrieves GET and POST variables respectively
+$request->query->get('foo');
+$request->request->get('bar', 'default value if bar does not exist');
+
+// retrieves SERVER variables
+$request->server->get('HTTP_HOST');
+
+// retrieves an instance of UploadedFile identified by foo
+$request->files->get('foo');
+
+// retrieves a COOKIE value
+$request->cookies->get('PHPSESSID');
+
+// retrieves a HTTP request header, with normalized, lowercase keys
+$request->headers->get('host');
+$request->headers->get('content-type');
+
+$request->getMethod();    // GET, POST, PUT, DELETE, HEAD
+$request->getLanguages(); // an array of languages the client accepts
+
+// simulate a request
+$request = Request::create('/index.php?name=Fabien');
+$response->setMaxAge(10);
+
+if ($myIp === $request->getClientIp()) {
+    // the client is a known one, so give it some more privilege
+}
+```
+
+=== `Response` class
+
+```php
+$response = new Response();
+
+$response->setContent('Hello world!');
+$response->setStatusCode(200);
+$response->headers->set('Content-Type', 'text/html');
+
+// configure the HTTP cache headers
+$response->setMaxAge(10);
+```
+
+{back_to_top}
+
+== PHPStorm configuration
+
+IMPORTANT: The following configuration are provided for *PHPStorm 2022.3.2*
+
+=== Enable auto-import in file scope
+
+For importing the classes like:
+
+```php
+use Symfony\Component\HttpFoundation\Request;
+$request = Request::createFromGlobals();
+```
+
+Instead of:
+
+```php
+$request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+
+```
+
+Go on *Settings (Ctrl+Alt+S) > Editor > General > Auto Import > PHP* and
+check *Enable auto-import in file scope*.
+
+
+{back_to_top}
+
+== Resources
+
+* https://symfony.com/doc/current/create_framework/index.html
+
+{back_to_top}
+
+== Comments, suggestions?
+
+Feel free to make comments/suggestions to me in the {git_url}/issues[Git issues section].
+
+{back_to_top}
+
+== License
+
+"{main_title}" is released under the {git_url}/blob/main/LICENSE[*MIT License*]
+
+---
+
+{back_to_top}
