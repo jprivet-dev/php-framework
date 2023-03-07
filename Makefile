@@ -40,5 +40,5 @@ install: ## Full installation
 
 .PHONY: tests
 tests: ## Run PHPUnit
-	php vendor/bin/phpunit tests --color
+	php vendor/bin/phpunit
 
