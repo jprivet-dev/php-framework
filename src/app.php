@@ -9,22 +9,13 @@ use Symfony\Component\Routing\RouteCollection;
 // Everything specific to our application in app.php
 //
 
-function is_leap_year(int $year): bool
+function render_template(Request $request): Response
 {
-    return 0 === $year % 400 || (0 === $year % 4 && 0 !== $year % 100);
-}
+    extract($request->attributes->all(), EXTR_SKIP);
+    ob_start();
+    require sprintf(__DIR__.'/../src/pages/%s.php', $_route); // Route names are used for template names
 
-class LeapYearController
-{
-    public function index(Request $request): Response
-    {
-        $year = $request->attributes->get('year');
-        $content = is_leap_year($year)
-            ? sprintf('Yep, %s is a leap year.', $year)
-            : sprintf('Nope, %s is not a leap year.', $year);
-
-        return new Response($content);
-    }
+    return new Response(ob_get_clean());
 }
 
 $routes = new RouteCollection();
@@ -48,7 +39,7 @@ $routes->add(
     'leap_year',
     new Route('/is_leap_year/{year}', [
         'year' => date('Y'),
-        '_controller' => 'LeapYearController::index',
+        '_controller' => 'Controller\LeapYearController::index',
     ])
 );
 
