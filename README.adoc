@@ -68,6 +68,17 @@ $ php -r "unlink('composer-setup.php');"
 
 Now run `php bin/composer` in order to run *Composer*.
 
+[TIP]
+====
+For the Composer autoloader to be updated, run:
+
+```
+$ php bin/composer dump-autoload
+Generating autoload files
+Generated autoload files
+```
+====
+
 {back_to_top}
 
 == Installation
