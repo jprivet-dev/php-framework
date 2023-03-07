@@ -1,10 +1,10 @@
 <?php
 
+use Simplex\Framework;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
@@ -27,27 +27,11 @@ $request = Request::createFromGlobals();
 $routes = require __DIR__.'/../src/app.php';
 
 $context = new RequestContext();
-$context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
-
 $controllerResolver = new ControllerResolver();
 $argumentResolver = new ArgumentResolver();
 
-try {
-    // Request attributes are extracted to keep our templates simple
-    $attributes = $matcher->match($request->getPathInfo());
-    $request->attributes->add($attributes);
-
-    // the "_controller" request attribute contains the controller associated with the Request
-    $controller = $controllerResolver->getController($request);
-    $arguments = $argumentResolver->getArguments($request, $controller);
-
-    $response = call_user_func_array($controller, $arguments);
-} catch (ResourceNotFoundException $exception) {
-    $response = new Response('Not Found', 404);
-} catch (Exception $exception) {
-    // 500 errors are now managed correctly
-    $response = new Response('An error occurred', 500);
-}
+$framework = new Framework($matcher, $controllerResolver, $argumentResolver);
+$response = $framework->handle($request);
 
 $response->send();
