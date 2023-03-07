@@ -21,8 +21,9 @@ function render_template(Request $request): Response
     return new Response(ob_get_clean());
 }
 
-$routes = require __DIR__.'/../src/app.php';
 $request = Request::createFromGlobals();
+$routes = require __DIR__.'/../src/app.php';
+
 $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
