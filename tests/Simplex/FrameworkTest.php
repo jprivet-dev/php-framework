@@ -18,6 +18,13 @@ class FrameworkTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
+    public function testErrorHandling()
+    {
+        $framework = $this->getFrameworkForException(new RuntimeException());
+        $response = $framework->handle(new Request());
+        $this->assertEquals(500, $response->getStatusCode());
+    }
+
     private function getFrameworkForException(Exception $exception): Framework
     {
         $context = $this->createMock(RequestContext::class);
