@@ -11,8 +11,17 @@ use Symfony\Component\Routing\RequestContext;
 //
 
 require_once __DIR__.'/../vendor/autoload.php';
-$routes = require __DIR__.'/../src/app.php';
 
+function render_template(Request $request): Response
+{
+    extract($request->attributes->all(), EXTR_SKIP);
+    ob_start();
+    require sprintf(__DIR__.'/../src/pages/%s.php', $_route); // Route names are used for template names
+
+    return new Response(ob_get_clean());
+}
+
+$routes = require __DIR__.'/../src/app.php';
 $request = Request::createFromGlobals();
 $context = new RequestContext();
 $context->fromRequest($request);
@@ -20,10 +29,9 @@ $matcher = new UrlMatcher($routes, $context);
 
 try {
     // Request attributes are extracted to keep our templates simple
-    extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
-    ob_start();
-    require sprintf(__DIR__.'/../src/pages/%s.php', $_route); // Route names are used for template names
-    $response = new Response(ob_get_clean());
+    $attributes = $matcher->match($request->getPathInfo());
+    $request->attributes->add($attributes);
+    $response = call_user_func($request->attributes->get('_controller'), $request);
 } catch (ResourceNotFoundException $exception) {
     $response = new Response('Not Found', 404);
 } catch (Exception $exception) {
