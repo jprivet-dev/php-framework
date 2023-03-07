@@ -48,7 +48,7 @@ $routes->add(
     'leap_year',
     new Route('/is_leap_year/{year}', [
         'year' => date('Y'),
-        '_controller' => [new LeapYearController, 'index'],
+        '_controller' => 'LeapYearController::index',
     ])
 );
 
