@@ -48,15 +48,17 @@ My own PHP framework, based on the https://symfony.com/doc/current/create_framew
 . https://www.php.net
 
 ```
-sudo apt install php
-sudo apt install php-xml
-sudo apt install php-mbstring
+$ sudo apt install php
+$ sudo apt install php-xml
+$ sudo apt install php-mbstring
 ```
 
 === Composer
 
 . https://getcomposer.org/download/
 . https://getcomposer.org/doc/00-intro.md#locally
+
+Example:
 
 ```
 $ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -78,6 +80,18 @@ Generating autoload files
 Generated autoload files
 ```
 ====
+
+{back_to_top}
+
+== Xdebug
+
+. https://xdebug.org/
+
+Ubuntu (18.04 LTS/Bionic, 20.04 LTS/Focal):
+
+```
+$ sudo apt-get install php-xdebug
+```
 
 {back_to_top}
 
