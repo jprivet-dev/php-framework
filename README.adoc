@@ -291,7 +291,9 @@ Go on *Settings (Ctrl+Alt+S) > Editor > General > Auto Import > PHP* and check *
 
 == Resources
 
-* https://symfony.com/doc/current/create_framework/index.html
+* Create your own PHP Framework: https://symfony.com/doc/current/create_framework/index.html
+* On recréé Symfony !
+(Lior CHAMLA): https://www.youtube.com/playlist?list=PLpUhHhXoxrjdk6VgTUrunQNlVZizBU4WF
 
 {back_to_top}
 
