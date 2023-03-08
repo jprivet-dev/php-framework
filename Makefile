@@ -40,6 +40,10 @@ install: ## Full installation
 
 .PHONY: tests
 tests: ## Run PHPUnit
+	php vendor/bin/phpunit
+
+.PHONY: list
+list: ## Run PHPUnit with a checklist of the tests
 	php vendor/bin/phpunit --testdox
 
 .PHONY: coverage
