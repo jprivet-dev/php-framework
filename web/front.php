@@ -19,6 +19,7 @@ $request = Request::createFromGlobals();
 $routes = require __DIR__.'/../src/app.php';
 
 $dispatcher = new EventDispatcher();
+// TODO: use subscribers
 $dispatcher->addListener('response', [new ContentLengthListener(), 'onResponse'], -255);
 $dispatcher->addListener('response', [new GoogleListener(), 'onResponse']);
 
