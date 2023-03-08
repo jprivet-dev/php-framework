@@ -14,6 +14,9 @@ class LeapYearController
             ? sprintf('Yep, %s is a leap year.', $year)
             : sprintf('Nope, %s is not a leap year.', $year);
 
-        return new Response($content);
+        $response = new Response($content);
+        $response->setTtl(10);
+
+        return $response;
     }
 }
