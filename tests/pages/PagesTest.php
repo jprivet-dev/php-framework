@@ -4,6 +4,7 @@ namespace pages;
 
 use PHPUnit\Framework\TestCase;
 use Simplex\Framework;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
@@ -18,11 +19,12 @@ class PagesTest extends TestCase
     {
         $routes = require __DIR__.'/../../src/app.php';
 
+        $dispatcher = new EventDispatcher();
         $urlMatcher = new UrlMatcher($routes, new RequestContext());
         $controllerResolver = new ControllerResolver();
         $argumentResolver = new ArgumentResolver();
 
-        $this->framework = new Framework($urlMatcher, $controllerResolver, $argumentResolver);
+        $this->framework = new Framework($dispatcher, $urlMatcher, $controllerResolver, $argumentResolver);
     }
 
     public function testHello()

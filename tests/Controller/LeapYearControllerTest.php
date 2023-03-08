@@ -4,6 +4,7 @@ namespace Controller;
 
 use PHPUnit\Framework\TestCase;
 use Simplex\Framework;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
@@ -33,6 +34,7 @@ class LeapYearControllerTest extends TestCase
 
     private function getFrameworkForResponse(string $year): Framework
     {
+        $dispatcher = $this->createMock(EventDispatcher::class);
         $context = $this->createMock(RequestContext::class);
 
         $matcher = $this->createMock(UrlMatcherInterface::class);
@@ -54,6 +56,6 @@ class LeapYearControllerTest extends TestCase
         $controllerResolver = new ControllerResolver();
         $argumentResolver = new ArgumentResolver();
 
-        return new Framework($matcher, $controllerResolver, $argumentResolver);
+        return new Framework($dispatcher, $matcher, $controllerResolver, $argumentResolver);
     }
 }

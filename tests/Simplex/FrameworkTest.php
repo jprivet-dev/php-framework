@@ -2,6 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Simplex\Framework;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolverInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
@@ -27,6 +28,7 @@ class FrameworkTest extends TestCase
 
     private function getFrameworkForException(Exception $exception): Framework
     {
+        $dispatcher = $this->createMock(EventDispatcher::class);
         $context = $this->createMock(RequestContext::class);
 
         $matcher = $this->createMock(UrlMatcherInterface::class);
@@ -42,6 +44,6 @@ class FrameworkTest extends TestCase
         $controllerResolver = $this->createMock(ControllerResolverInterface::class);
         $argumentResolver = $this->createMock(ArgumentResolverInterface::class);
 
-        return new Framework($matcher, $controllerResolver, $argumentResolver);
+        return new Framework($dispatcher, $matcher, $controllerResolver, $argumentResolver);
     }
 }
