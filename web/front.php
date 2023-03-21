@@ -1,26 +1,37 @@
 <?php
 
+use Simplex\ContentLengthListener;
+use Simplex\Framework;
+use Simplex\GoogleListener;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ControllerResolver;
+use Symfony\Component\HttpKernel\HttpCache\HttpCache;
+use Symfony\Component\HttpKernel\HttpCache\Store;
+use Symfony\Component\Routing\Matcher\UrlMatcher;
+use Symfony\Component\Routing\RequestContext;
+
+//
+// The generic code that powers our application in front.php
+//
 
 require_once __DIR__.'/../vendor/autoload.php';
-
 $request = Request::createFromGlobals();
-$response = new Response();
+$routes = require __DIR__.'/../src/app.php';
 
-$map = [
-    '/hello' => 'hello.php',
-    '/bye' => 'bye.php',
-];
+$dispatcher = new EventDispatcher();
+// TODO: use subscribers
+$dispatcher->addListener('response', [new ContentLengthListener(), 'onResponse'], -255);
+$dispatcher->addListener('response', [new GoogleListener(), 'onResponse']);
 
-$path = $request->getPathInfo();
-if (isset($map[$path])) {
-    ob_start();
-    require __DIR__.'/../src/pages/'.$map[$path];
-    $response->setContent(ob_get_clean());
-} else {
-    $response->setStatusCode(404);
-    $response->setContent('Not Found');
-}
+$context = new RequestContext();
+$matcher = new UrlMatcher($routes, $context);
+$controllerResolver = new ControllerResolver();
+$argumentResolver = new ArgumentResolver();
 
+$framework = new Framework($dispatcher, $matcher, $controllerResolver, $argumentResolver);
+$framework = new HttpCache($framework, new Store(__DIR__.'/../cache'));
+
+$response = $framework->handle($request);
 $response->send();

@@ -40,5 +40,13 @@ install: ## Full installation
 
 .PHONY: tests
 tests: ## Run PHPUnit
-	php vendor/bin/phpunit tests --color
+	php vendor/bin/phpunit
+
+.PHONY: dox
+dox: ## Run PHPUnit with a checklist of the tests (--testdox)
+	php vendor/bin/phpunit --testdox
+
+.PHONY: coverage
+coverage: ## Run PHPUnit coverage (with Xdebug)
+	XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-html=cov/
 

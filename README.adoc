@@ -33,7 +33,11 @@ toc::[]
 
 My own PHP framework, based on the https://symfony.com/doc/current/create_framework/index.html[Create your own PHP Framework] tutorial of Symfony.
 
-TIP: Don't reinvent the wheel!
+[TIP]
+====
+* Don't reinvent the wheel!
+* Still have the separation of concerns principle in mind!
+====
 
 {back_to_top}
 
@@ -44,15 +48,17 @@ TIP: Don't reinvent the wheel!
 . https://www.php.net
 
 ```
-sudo apt install php
-sudo apt install php-xml
-sudo apt install php-mbstring
+$ sudo apt install php
+$ sudo apt install php-xml
+$ sudo apt install php-mbstring
 ```
 
 === Composer
 
 . https://getcomposer.org/download/
 . https://getcomposer.org/doc/00-intro.md#locally
+
+Example:
 
 ```
 $ php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -63,6 +69,29 @@ $ php -r "unlink('composer-setup.php');"
 ```
 
 Now run `php bin/composer` in order to run *Composer*.
+
+[TIP]
+====
+For the Composer autoloader to be updated, run:
+
+```
+$ php bin/composer dump-autoload
+Generating autoload files
+Generated autoload files
+```
+====
+
+{back_to_top}
+
+== Xdebug
+
+. https://xdebug.org/
+
+Ubuntu (18.04 LTS/Bionic, 20.04 LTS/Focal):
+
+```
+$ sudo apt-get install php-xdebug
+```
 
 {back_to_top}
 
@@ -138,6 +167,104 @@ $response->setMaxAge(10);
 
 {back_to_top}
 
+=== `UrlGenerator` class
+
+```php
+use Symfony\Component\Routing;
+
+$generator = new Routing\Generator\UrlGenerator($routes, $context);
+
+echo $generator->generate('hello', ['name' => 'Fabien']);
+// outputs /hello/Fabien
+```
+
+```php
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+echo $generator->generate(
+    'hello',
+    ['name' => 'Fabien'],
+    UrlGeneratorInterface::ABSOLUTE_URL
+);
+// outputs something like http://example.com/somewhere/hello/Fabien
+```
+
+{back_to_top}
+
+=== Callables
+
+NOTE: See https://www.php.net/manual/en/language.types.callable.php
+
+```php
+function my_function(string $name)
+{
+    var_dump(sprintf('Simple: %s', $name));
+}
+
+$callable = 'my_function';
+
+$callable('Fabien');                    // Simple: Fabien
+call_user_func($callable, 'Fabien');    // Simple: Fabien
+```
+
+```php
+$anonyme = function (string $name) {
+    var_dump(sprintf('Closure: %s', $name));
+};
+
+$callable = $anonyme;
+
+$callable('Fabien');                    // Closure: Fabien
+call_user_func($callable, 'Fabien');    // Closure: Fabien
+```
+
+```php
+class MyClass
+{
+    public function myMethod(string $name)
+    {
+        var_dump(sprintf('Method: %s', $name));
+    }
+}
+
+$callable = [new MyClass, 'myMethod'];
+
+$callable('Fabien');                    // Method: Fabien
+call_user_func($callable, 'Fabien');    // Method: Fabien
+```
+
+```php
+class MyClass
+{
+    static function myMethod(string $name)
+    {
+        var_dump(sprintf('Static: %s', $name));
+    }
+}
+
+$callable = ['MyClass', 'myMethod'];
+
+$callable('Fabien');                    // Static: Fabien
+call_user_func($callable, 'Fabien');    // Static: Fabien
+```
+
+```php
+class MyClass
+{
+    public function __invoke(string $name)
+    {
+        var_dump(sprintf('Invoke: %s', $name));
+    }
+}
+
+$callable = new MyClass();
+
+$callable('Fabien');                    // Invoke: Fabien
+call_user_func($callable, 'Fabien');    // Invoke: Fabien
+```
+
+{back_to_top}
+
 == PHPStorm configuration
 
 IMPORTANT: The following configuration are provided for *PHPStorm 2022.3.2*
@@ -158,15 +285,15 @@ $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
 ```
 
-Go on *Settings (Ctrl+Alt+S) > Editor > General > Auto Import > PHP* and
-check *Enable auto-import in file scope*.
-
+Go on *Settings (Ctrl+Alt+S) > Editor > General > Auto Import > PHP* and check *Enable auto-import in file scope*.
 
 {back_to_top}
 
 == Resources
 
-* https://symfony.com/doc/current/create_framework/index.html
+* Create your own PHP Framework: https://symfony.com/doc/current/create_framework/index.html
+* On recréé Symfony !
+(Lior CHAMLA): https://www.youtube.com/playlist?list=PLpUhHhXoxrjdk6VgTUrunQNlVZizBU4WF
 
 {back_to_top}
 
